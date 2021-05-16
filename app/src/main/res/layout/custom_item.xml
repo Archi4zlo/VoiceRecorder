@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/containers"
+    android:background="@android:color/transparent"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imgRecord"
+        android:src="@drawable/ic_recordings"
+        android:layout_width="60dp"
+        android:padding="10dp"
+        android:layout_height="60dp">
+    </ImageView>
+    <TextView
+        android:textSize="24sp"
+        android:layout_marginLeft="10dp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:textColor="@color/white"
+        android:gravity="center_vertical"
+        android:id="@+id/txtName"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+    </TextView>
+</LinearLayout>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecordingsListFragment extends Fragment implements onSelectedListener {
+public class RecordingsListFragment extends Fragment implements onSelectedListener{
 
     View view;
 
@@ -42,7 +43,7 @@ public class RecordingsListFragment extends Fragment implements onSelectedListen
         return view;
     }
 
-    private void displayFiles() {
+    void displayFiles() {
         recyclerView = view.findViewById(R.id.recycler_records);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
@@ -80,4 +81,5 @@ public class RecordingsListFragment extends Fragment implements onSelectedListen
             displayFiles();
         }
     }
+
 }

@@ -5,6 +5,7 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.archi4zlo.voicerecorder.R;
+import com.archi4zlo.voicerecorder.adapters.ViewPagerAdapter;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -40,13 +42,22 @@ public class RecorderFragment extends Fragment {
     TextView txtRecStatus;
     Chronometer timeRecord;
     GifImageView gifView;
-
     private static String filename;
     private MediaRecorder recorder;
     boolean isRecording;
 
     File path = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/VoiceRecorder");
 
+    public void updateFilename(){
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        String date = format.format(new Date());
+
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+
+        filename = path + "/recording_" + date + ".amr";
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,20 +72,14 @@ public class RecorderFragment extends Fragment {
 
         askRuntimePermission();
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
-        String date = format.format(new Date());
-
-        if (!path.exists()) {
-            path.mkdirs();
-        }
-
-        filename = path + "/recording_" + date + ".amr";
+        updateFilename();
 
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isRecording) {
                     try {
+
                         startRecording();
                         gifView.setVisibility(View.VISIBLE);
                         timeRecord.setBase(SystemClock.elapsedRealtime());
@@ -89,6 +94,7 @@ public class RecorderFragment extends Fragment {
                     }
                 }
                 else {
+                    updateFilename();
                     stopRecording();
                     gifView.setVisibility(View.GONE);
                     timeRecord.setBase(SystemClock.elapsedRealtime());
@@ -103,6 +109,15 @@ public class RecorderFragment extends Fragment {
     }
 
     private void startRecording() {
+
+        if (recorder != null) {
+            try {
+                recorder.release();
+                recorder = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
@@ -119,6 +134,7 @@ public class RecorderFragment extends Fragment {
     }
 
     private void stopRecording() {
+
         recorder.stop();
         recorder.release();
         recorder = null;
@@ -140,4 +156,16 @@ public class RecorderFragment extends Fragment {
                 }).check();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (recorder != null) {
+            try {
+                recorder.release();
+                recorder = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

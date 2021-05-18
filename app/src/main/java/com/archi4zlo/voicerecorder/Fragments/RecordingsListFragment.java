@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +43,12 @@ public class RecordingsListFragment extends Fragment implements onSelectedListen
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Toast.makeText(getContext(),"long press on the entry to delete",Toast.LENGTH_LONG).show();
+    }
+
     void displayFiles() {
         recyclerView = view.findViewById(R.id.recycler_records);
         recyclerView.setHasFixedSize(true);
@@ -72,6 +78,12 @@ public class RecordingsListFragment extends Fragment implements onSelectedListen
         intent.setDataAndType(uri,"audio/x-wav");
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         getContext().startActivity(intent);
+    }
+
+    @Override
+    public void onLongSelected(File file) {
+        file.delete();
+        displayFiles();
     }
 
     @Override

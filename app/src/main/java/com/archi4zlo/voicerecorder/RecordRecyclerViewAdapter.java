@@ -42,6 +42,13 @@ public class RecordRecyclerViewAdapter extends RecyclerView.Adapter<RecordViewHo
                 listener.onSelected(fileList.get(position));
             }
         });
+        holder.container.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                listener.onLongSelected(fileList.get(position));
+                return true;
+            }
+        });
 
     }
 

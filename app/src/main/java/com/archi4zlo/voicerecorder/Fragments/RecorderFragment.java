@@ -79,7 +79,6 @@ public class RecorderFragment extends Fragment {
             public void onClick(View v) {
                 if (!isRecording) {
                     try {
-
                         startRecording();
                         gifView.setVisibility(View.VISIBLE);
                         timeRecord.setBase(SystemClock.elapsedRealtime());
@@ -146,7 +145,6 @@ public class RecorderFragment extends Fragment {
                 .withListener(new MultiplePermissionsListener() {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
-                        Toast.makeText(getContext(), "Granted!!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
